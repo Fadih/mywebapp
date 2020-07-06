@@ -138,24 +138,34 @@
         }
     },
     "Resources": {
-        "dnsrecord" : {
-            "Type" : "AWS::Route53::RecordSetGroup",
-            "Properties" : {
-                "HostedZoneName" : "aws-dev.perfectomobile.com",
-                "Comment" : "Weighted RR for my frontends.",
-                "RecordSets" : [
-                  {
-                    "Name" : "mywebapp.aws-dev.perfectomobile.com",
-                    "Type" : "CNAME",
-                    "TTL" : "900",
-                    "SetIdentifier" : "Frontend One",
-                    "Weight" : "140",
-                    "ResourceRecords" : {"Fn::GetAtt": [
-              "ApplicationLoadBalancer",
-              "DNSName"
-            ]}
-                  }
-                  ]
+        "myDNSRecord" : {
+            "Type": "AWS::Route53::RecordSet",
+            "Properties": {
+                "HostedZoneName": "aws-dev.perfectomobile.com.",
+                "Comment": "DNS name for my instance.",
+                "Name": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "mywebapp.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            "aws-dev.perfectomobile.com."
+                        ]
+                    ]
+                },
+                "Type": "A",
+                "TTL": "900",
+                "ResourceRecords": [
+                    {
+                        "Fn::GetAtt": [
+                            "ApplicationLoadBalancer",
+                            "DNSName"
+                        ]
+                    }
+                ]
             }
         },
         "ApplicationLoadBalancer": {
@@ -621,7 +631,7 @@
             }
         },
         "PublicDNSRecord" : {
-      "Value": { "Ref": "dnsrecord" }
+      "Value": { "Ref": "myDNSRecord" }
     }
     }
 }
