@@ -67,35 +67,8 @@ stages {
 
         }
     }
-
-
-
-    stage('call deploy job') {
-        steps {
-
-    build job: 'appiumVersion-for-emulators-puppet-deploy', parameters: [[$class: 'StringParameterValue', name: 'appiumVersion', value: "${params.appiumVersionsList}"]]
-
-        }
-    }
-
-
-
-
-
 }
 
-
-post {
-     always {
-
-       archiveArtifacts artifacts: 'emulator-container/images/images.txt', onlyIfSuccessful: false
-
-     }
-
-
-
-
-}
 
 
 
