@@ -619,6 +619,9 @@
                     ]
                 ]
             }
-        }
+        },
+        "PublicDNSRecord" : {
+      "Value": { "Ref": "dnsrecord" }
+    }
     }
 }
