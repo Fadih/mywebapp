@@ -42,7 +42,7 @@ stages {
 
                   checkout([$class: 'GitSCM', branches: [[name: '*/master']],
                       userRemoteConfigs: [[url: 'git@github.com:Fadih/mywebapp.git']],
-                       extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'mywebapp']]
+                       extensions: [[$class: 'RelativeTargetDirectory']]
                       ])
 
 
@@ -55,7 +55,7 @@ stages {
 
              dir ('mywebapp') {
                     sh 'pwd'
-                    sh 'aws cloudformation  create-stack --stack-name ffff --region us-east-1 --template-body file://mywebapp/webAppTemp.json'
+                    sh 'aws cloudformation  create-stack --stack-name ffff --region us-east-1 --template-body file://webAppTemp.json'
                     sh 'aws cloudformation wait stack-create-complete --region us-east-1 --stack-name ffff'
 
 
