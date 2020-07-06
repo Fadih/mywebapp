@@ -55,7 +55,7 @@ stages {
 
              dir ('mywebapp') {
                     sh 'pwd'
-                    sh 'aws cloudformation  create-stack --stack-name ffff --region us-east-1 --template-body file://webAppTemp.json'
+                    sh 'aws cloudformation  create-stack --stack-name ffff --region us-east-1 --template-body webAppTemp.json'
                     sh 'aws cloudformation wait stack-create-complete --region us-east-1 --stack-name ffff'
 
 
