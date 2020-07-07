@@ -132,8 +132,8 @@
         },
         "AWSRegionArch2AMI": {
             "us-east-1": {
-                "HVM64": "ami-0080e4c5bc078760e",
-                "HVMG2": "ami-0aeb704d503081ea6"
+                "HVM64": "ami-045f1b3f87ed83659",
+                "HVMG2": "ami-045f1b3f87ed83659"
             }
         }
     },
@@ -294,9 +294,23 @@
                                             "[main]\n",
                                             "server=puppet6.aws-prod.perfectomobile.com\n",
                                             "environment=production\n",
-                                            "certname=amazon.webappfadi.tlv.dev.",
+                                            "certname=amazon.mywebapp.tlv.dev.",
                                             {
-                                                "Ref": "AWS::StackId"
+                                                "Fn::FindInMap": [
+                                                    "AWSRegionArch2AMI",
+                                                    {
+                                                      "Ref": "AWS::Region"
+                                                    },
+                                                    {
+                                                      "Fn::FindInMap": [
+                                                        "AWSInstanceType2Arch",
+                                                        {
+                                                          "Ref": "InstanceType"
+                                                        },
+                                                        "Arch"
+                                                      ]
+                                                    }
+                                                  ]
                                             },
                                             "\n",
                                             "http_proxy_host=proxium-us-east-1.aws-prod.perfectomobile.com\n",
@@ -472,7 +486,23 @@
                 }
             },
             "Properties": {
-                "ImageId": "ami-045f1b3f87ed83659",
+                "ImageId": {
+          "Fn::FindInMap": [
+            "AWSRegionArch2AMI",
+            {
+              "Ref": "AWS::Region"
+            },
+            {
+              "Fn::FindInMap": [
+                "AWSInstanceType2Arch",
+                {
+                  "Ref": "InstanceType"
+                },
+                "Arch"
+              ]
+            }
+          ]
+        },
                 "InstanceType": {
                     "Ref": "InstanceType"
                 },
@@ -514,7 +544,15 @@
                                 {
                                     "Ref": "AWS::Region"
                                 },
-                                "\n"
+                                "\n",
+                                "rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-6.noarch.rpm",
+                                 "\n",
+                                "yum install puppet-agent -y",
+                                "\n",
+                                "puppet agent -t"
+
+
+
                             ]
                         ]
                     }
