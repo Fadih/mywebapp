@@ -634,6 +634,12 @@
         },
         "PublicDNSRecord" : {
       "Value": { "Ref": "myDNSRecord" }
+    },
+     "db" : {
+      "Value": { "Fn::GetAtt": [
+                     "MySQLDatabase",
+                     "Endpoint.Address"
+       ] }
     }
     }
 }
