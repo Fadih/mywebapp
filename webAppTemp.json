@@ -210,7 +210,7 @@
                 "TargetGroupAttributes": [
                     {
                         "Key": "stickiness.enabled",
-                        "Value": "true"
+                        "Value": "false"
                     },
                     {
                         "Key": "stickiness.type",
