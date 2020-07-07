@@ -138,6 +138,15 @@
         }
     },
     "Resources": {
+         "createuniqid": {
+      "Type": "AWS::CloudFormation::CustomResource",
+      "Properties": {
+        "Length": 25,
+        "Punctuation": true,
+        "RDSCompatible": true,
+        "ServiceToken": "arn:aws:lambda:us-east-1:961701920393:function:createuniqid"
+      }
+    },
         "myDNSRecord" : {
          "Type" : "AWS::Route53::RecordSet",
          "Properties" : {
@@ -296,21 +305,7 @@
                                             "environment=production\n",
                                             "certname=amazon.mywebapp.tlv.dev.",
                                             {
-                                                "Fn::FindInMap": [
-                                                    "AWSRegionArch2AMI",
-                                                    {
-                                                      "Ref": "AWS::Region"
-                                                    },
-                                                    {
-                                                      "Fn::FindInMap": [
-                                                        "AWSInstanceType2Arch",
-                                                        {
-                                                          "Ref": "InstanceType"
-                                                        },
-                                                        "Arch"
-                                                      ]
-                                                    }
-                                                  ]
+                                                "Fn::GetAtt": ["createuniqid", "RandomString"]
                                             },
                                             "\n",
                                             "http_proxy_host=proxium-us-east-1.aws-prod.perfectomobile.com\n",
