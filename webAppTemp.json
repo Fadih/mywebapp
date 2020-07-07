@@ -138,15 +138,6 @@
         }
     },
     "Resources": {
-         "createuniqid": {
-      "Type": "AWS::CloudFormation::CustomResource",
-      "Properties": {
-        "Length": 25,
-        "Punctuation": true,
-        "RDSCompatible": true,
-        "ServiceToken": "arn:aws:lambda:us-east-1:961701920393:function:createuniqid"
-      }
-    },
         "myDNSRecord" : {
          "Type" : "AWS::Route53::RecordSet",
          "Properties" : {
@@ -295,31 +286,6 @@
                             }
                         },
                         "files": {
-                            "/etc/puppetlabs/puppet/puppet.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[main]\n",
-                                            "server=puppet6.aws-prod.perfectomobile.com\n",
-                                            "environment=production\n",
-                                            "certname=amazon.mywebapp.tlv.dev.",
-                                            {
-                                                "Fn::GetAtt": ["createuniqid", "RandomString"]
-                                            },
-                                            "\n",
-                                            "http_proxy_host=proxium-us-east-1.aws-prod.perfectomobile.com\n",
-                                            "http_proxy_port=3128\n",
-                                            "spaly=true\n",
-                                            "runinterval=10m\n",
-                                            "autoflush=true\n"
-                                        ]
-                                    ]
-                                },
-                                "mode": "000400",
-                                "owner": "root",
-                                "group": "root"
-                            },
                             "/var/www/html/index.php": {
                                 "content": {
                                     "Fn::Join": [
@@ -544,7 +510,26 @@
                                  "\n",
                                 "yum install puppet-agent -y",
                                 "\n",
-                                "puppet agent -t"
+                                 "echo [main] > /etc/puppetlabs/puppet/puppet.conf",
+                                "\n",
+                                "echo server=puppet6.aws-prod.perfectomobile.com >> /etc/puppetlabs/puppet/puppet.conf",
+                                "\n",
+                                "echo environment=production >> /etc/puppetlabs/puppet/puppet.conf",
+                                "\n",
+                                 "$instanceid=$(curl http://169.254.169.254/latest/meta-data/instance-id)",
+                                "\n",
+                                "echo certname=amazon.mywebapp.tlv.dev.$instanceid >> /etc/puppetlabs/puppet/puppet.conf",
+                                "\n",
+                                "echo http_proxy_host=proxium-us-east-1.aws-prod.perfectomobile.com >> /etc/puppetlabs/puppet/puppet.conf",
+                                "\n",
+                                "echo http_proxy_port=3128 >> /etc/puppetlabs/puppet/puppet.conf",
+                                "\n",
+                                "echo spaly=true >> /etc/puppetlabs/puppet/puppet.conf",
+                                "\n",
+                                "echo runinterval=10m >> /etc/puppetlabs/puppet/puppet.conf",
+                                "\n",
+                                "echo autoflush=true >> /etc/puppetlabs/puppet/puppet.conf",
+                                "\n"
 
 
 
