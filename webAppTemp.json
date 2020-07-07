@@ -432,7 +432,7 @@
                                             "[cfn-auto-reloader-hook]\n",
                                             "triggers=post.update\n",
                                             "path=Resources.LaunchConfig.Metadata.AWS::CloudFormation::Init\n",
-                                            "action=/opt/aws/bin/cfn-init -v ",
+                                            "action=/opt/aws/apitools/cfn-init/bin/cfn-init -v ",
                                             "         --stack ",
                                             {
                                                 "Ref": "AWS::StackName"
@@ -490,9 +490,9 @@
                             "",
                             [
                                 "#!/bin/bash -xe\n",
-                                "yum update -y aws-cfn-bootstrap\n",
+                                "yum install -y aws-cfn-bootstrap\n",
                                 "# Install the files and packages from the metadata\n",
-                                "/opt/aws/bin/cfn-init -v ",
+                                "/opt/aws/apitools/cfn-init/bin/cfn-init -v ",
                                 "         --stack ",
                                 {
                                     "Ref": "AWS::StackName"
@@ -504,7 +504,7 @@
                                 },
                                 "\n",
                                 "# Signal the status from cfn-init\n",
-                                "/opt/aws/bin/cfn-signal -e $? ",
+                                "/opt/aws/apitools/cfn-init/bin/cfn-signal -e $? ",
                                 "         --stack ",
                                 {
                                     "Ref": "AWS::StackName"
