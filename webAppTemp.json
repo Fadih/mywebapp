@@ -142,28 +142,28 @@
          "Type" : "AWS::Route53::RecordSet",
          "Properties" : {
             "HostedZoneName" :"aws-dev.perfectomobile.com.",
-            "Comment" : "DNS name for my instance.",  
+            "Comment" : "DNS name for my instance.",
             "Name" : {
-               "Fn::Join" : [ 
-                  "", 
+               "Fn::Join" : [
+                  "",
                   [
                      "mywebapp.",
                      {
                         "Ref" : "AWS::Region"
-                     }, 
+                     },
                      ".",
                      "aws-dev.perfectomobile.com."
-                  ] 
+                  ]
                ]
             },
             "Type" : "CNAME",
             "TTL" : "900",
             "ResourceRecords" : [
-               { 
-                  "Fn::GetAtt" : [ 
-                     "ApplicationLoadBalancer", 
-                     "DNSName" 
-                  ] 
+               {
+                  "Fn::GetAtt" : [
+                     "ApplicationLoadBalancer",
+                     "DNSName"
+                  ]
                }
             ]
          }
@@ -472,23 +472,7 @@
                 }
             },
             "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSRegionArch2AMI",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        {
-                            "Fn::FindInMap": [
-                                "AWSInstanceType2Arch",
-                                {
-                                    "Ref": "InstanceType"
-                                },
-                                "Arch"
-                            ]
-                        }
-                    ]
-                },
+                "ImageId": "ami-045f1b3f87ed83659",
                 "InstanceType": {
                     "Ref": "InstanceType"
                 },
