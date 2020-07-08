@@ -12,5 +12,5 @@
 
 
 
-![alt text](https://github.com/Fadih/mywebapp/master/screenshot.png?raw=true)
+![alt text](https://github.com/Fadih/mywebapp/screenshot.png?raw=true)
 
