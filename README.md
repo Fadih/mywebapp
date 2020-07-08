@@ -7,7 +7,7 @@
 5. the project using aws SNS to send email notifaction when scale up or down occured
 6. the project configure puppet agent on each server with uniqe certname  that allow the attached module to run and update the apache server. 
 7. the project running  a web app that connecting to the db and get data from it , also have a form that insert data to db.
-8. jenkinsFile attached to bring up the env , the jenkins job should wait to the deployment to finish and update the status regaring to it.
+8. jenkinsFile attached to bring up the env , the jenkins job should wait to the deployment to finish and update the status regarding to it.
 
 
 #screenshot
