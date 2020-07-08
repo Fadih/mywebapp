@@ -1,0 +1,5 @@
+---
+ mywebapp::servername: xxxxxxxxxxxxxxxxxxx
+ mywebapp::username: fadi
+ mywebapp::password: fadihuss
+ mywebapp::dbname: fadidb

@@ -1,0 +1,91 @@
+<html>
+<body>
+
+<h1>rocky team puppet update</h1>
+
+<?php
+
+$curl_handle=curl_init();
+      curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
+      curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
+      // Get the hostname of the intance from the instance metadata
+      curl_setopt($curl_handle,CURLOPT_URL,'http://169.254.169.254/latest/meta-data/public-hostname');
+      $hostname = curl_exec($curl_handle);
+      // Get the instance-id of the intance from the instance metadata
+      curl_setopt($curl_handle,CURLOPT_URL,'http://169.254.169.254/latest/meta-data/instance-id');
+      $instanceid = curl_exec($curl_handle);
+      if (empty($instanceid))
+      {
+        print "Sorry, for some reason, we got no instance id back <br />";
+      }
+      else
+      {
+        print "EC2 instance-id = " . $instanceid . "<br />";
+      }
+
+
+echo "<table style='border: solid 1px black;'>";
+ echo "<tr><th>Id</th><th>Firstname</th><th>Lastname</th></tr>";
+
+class TableRows extends RecursiveIteratorIterator {
+    function __construct($it) {
+        parent::__construct($it, self::LEAVES_ONLY);
+    }
+
+    function current() {
+        return "<td style='width: 150px; border: 1px solid black;'>" . parent::current(). "</td>";
+    }
+
+    function beginChildren() {
+        echo "<tr>";
+    }
+
+    function endChildren() {
+        echo "</tr>" . "\n";
+    }
+}
+
+$servername = "<%= @servername %>";
+$username = "<%= @username %>";
+$password = "<%= @password %>";
+$dbname = "<%= @dbname %>";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $stmt = $conn->prepare("SELECT id, firstname, lastname FROM players");
+    $stmt->execute();
+
+    // set the resulting array to associative
+    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+    foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+        echo $v;
+    }
+}
+catch(PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+$conn = null;
+echo "</table>";
+
+
+print (" Connected to $servername successfully");
+?>
+
+     <h2>Your details</h2>
+<form action="insert.php" method="post">
+    <p>
+        <label for="firstName">First Name:</label>
+        <input type="text" name="first_name" id="firstName">
+    </p>
+    <p>
+        <label for="lastName">Last Name:</label>
+        <input type="text" name="last_name" id="lastName">
+    </p>
+
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
